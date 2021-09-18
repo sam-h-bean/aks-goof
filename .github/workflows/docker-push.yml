@@ -1,0 +1,25 @@
+name: Docker Image Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+
+    # Connect to Azure Container Registry (ACR)
+    - uses: azure/docker-login@v1
+      with:
+        login-server: aksGoofRegistry.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    # Container build and push to a Azure Container Registry (ACR)
+    # TODO: we are always pushing to latest, this should be the commit hash on feature branches and latest on main
+    - run: |
+        docker build . -t aksgoofregistry.azurecr.io/http-goof:latest
+        docker push aksgoofregistry.azurecr.io/http-goof:latest

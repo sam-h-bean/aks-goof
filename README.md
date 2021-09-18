@@ -12,7 +12,7 @@ The infrastructure as code is found in the terraform directory.
 * I created an API token in TFCloud and added it to my Github Actions secrets.
 * Create a Service Principal. This generates authentication tokens that are required for Terraform. To create the service principal from the
 commandline run `az ad sp create-for-rbac --name "azure-goof-tf" --role Contributor --scopes /subscriptions/<subscription id> --sdk-auth
-` and put the credentials in your password manager. The `clientID`, `clientSecret`, `subscriptionID`, and `tenantID` should also be set as secrets
-in your Github repository to be accessed in your Github Actions CI/CD pipeline. The `clientID` and `clientSecret` are also required by the AKS resource so
-add them as Terraform variables in TFCloud.
+` and put the credentials in your password manager. The `clientID`, `clientSecret`, `subscriptionID`, and `tenantID` should also be set as env vars
+in tfcloud. The `clientID` and `clientSecret` are also required by the AKS resource so add them as Terraform variables in TFCloud.
+* After Terraforming ACR I needed to enable the admin user then get the username and password to use in Github Actions.
 * 
