@@ -21,5 +21,5 @@ jobs:
     # Container build and push to a Azure Container Registry (ACR)
     # TODO: we are always pushing to latest, this should be the commit hash on feature branches and latest on main
     - run: |
-        docker build . -t aksgoofregistry.azurecr.io/http-goof:latest
-        docker push aksgoofregistry.azurecr.io/http-goof:latest
+        docker build . -t aksGoofRegistry.azurecr.io/http-goof:latest
+        docker push aksGoofRegistry.azurecr.io/http-goof:latest
