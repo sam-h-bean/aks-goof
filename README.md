@@ -10,5 +10,8 @@ The infrastructure as code is found in the terraform directory.
 
 ## Manual Steps Taken
 * I created an API token in TFCloud and added it to my Github Actions secrets.
-* In Azure create a Service Principal. This has authentication tokens that are required for Terraform.
+* Create a Service Principal. This generates authentication tokens that are required for Terraform. To create the service principal from the
+commandline run `az ad sp create-for-rbac --name "azure-goof-tf" --role Contributor --scopes /subscriptions/<subscription id> --sdk-auth
+` and put the credentials in your password manager. The `clientID`, `clientSecret`, `subscriptionID`, and `tenantID` should also be set as secrets
+in your Github repository to be accessed in your Github Actions CI/CD pipeline.
 * 
