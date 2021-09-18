@@ -15,4 +15,3 @@ commandline run `az ad sp create-for-rbac --name "azure-goof-tf" --role Contribu
 ` and put the credentials in your password manager. The `clientID`, `clientSecret`, `subscriptionID`, and `tenantID` should also be set as env vars
 in tfcloud. The `clientID` and `clientSecret` are also required by the AKS resource so add them as Terraform variables in TFCloud.
 * After Terraforming ACR I needed to enable the admin user then get the username and password to use in Github Actions.
-* 

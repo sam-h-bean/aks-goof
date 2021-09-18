@@ -1,0 +1,57 @@
+name: Docker Image Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  kubernetes-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+
+    # Connect to Azure Container Registry (ACR)
+    - uses: azure/docker-login@v1
+      with:
+        login-server: aksgoofregistry.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    # Container build and push to a Azure Container Registry (ACR)
+    # TODO: we are always pushing to latest, this should be the commit hash on feature branches and latest on main
+    - run: |
+        docker build . -t aksgoofregistry.azurecr.io/http-goof:latest
+        docker push aksgoofregistry.azurecr.io/http-goof:latest
+
+    # Set the target Azure Kubernetes Service (AKS) cluster.
+    - uses: azure/aks-set-context@v1
+      with:
+        cluster-name: "aks-goof-k8s"
+        resource-group: "aks-goof-k8s-rg"
+
+    # Create namespace if doesn't exist
+    - run: |
+        kubectl create namespace http-goof --dry-run -o json | kubectl apply -f -
+
+    # Create image pull secret for ACR
+    - uses: azure/k8s-create-secret@v1
+      with:
+        container-registry-url: aksgoofregistry.azurecr.io
+        container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        secret-name: "pull-secret"
+        namespace: "http-goof"
+        force: true
+
+    # Deploy app to AKS
+    - uses: azure/k8s-deploy@v1
+      with:
+        manifests: |
+          manifests/deployment.yml
+          manifests/service.yml
+        images: |
+          aksgoofregistry.azurecr.io/http-goof:latest
+        imagepullsecrets: |
+          "pull-secret"
+        namespace: "http-goof"
