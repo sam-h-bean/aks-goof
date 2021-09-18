@@ -1,0 +1,30 @@
+name: Terraform
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: Terraform Format, Init, Plan, and Apply
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1.2.1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_TOKEN }}
+      - name: Setup Kubernetes CLI
+        uses: azure/setup-kubectl@v1
+        id: install
+      - name: Terraform Init
+        id: init
+        run: terraform -chdir=terraform init
+      - name: Terraform Plan
+        id: plan
+        run: terraform -chdir=terraform plan
+      - name: Terraform Apply
+        id: apply
+        run: terraform -chdir=terraform apply -auto-approve
