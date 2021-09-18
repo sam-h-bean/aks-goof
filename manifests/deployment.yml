@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: contoso-website
+  name: http-goof
 spec:
   selector:
     matchLabels:
-      app: contoso-website
+      app: http-goof
   template:
     metadata:
       labels:
@@ -14,7 +14,6 @@ spec:
       containers:
         - image: aksgoofregistry.azurecr.io/http-goof:latest
           name: http-goof
-          ImagePullPolicy: IfNotPresent
           resources:
             requests:
               cpu: 100m
