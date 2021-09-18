@@ -27,6 +27,7 @@ jobs:
     # Set the target Azure Kubernetes Service (AKS) cluster.
     - uses: azure/aks-set-context@v1
       with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
         cluster-name: "aks-goof-k8s"
         resource-group: "aks-goof-k8s-rg"
 
