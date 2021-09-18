@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Ingress
+metadata:
+  name: http-goof
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+    - host: akf-goof-k8s-1a701717.hcp.eastus.azmk8s.io
+      http:
+        paths:
+          - backend:
+              serviceName: http-goof
+              servicePort: https
+            path: /
