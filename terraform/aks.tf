@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "aks_goof" {
-  name     = "aks-goof-k8s-resources"
+  name     = "aks-goof-k8s-rg"
   location = "East US"
 }
 
